@@ -13,8 +13,12 @@ class Map():
     self.screen = main.screen
     self.map_f = main.args[1]
     self.load_map(self.map_f)
-    self.tile_offset = [0,0]
+    self.tile_offset = [40,40]
     self.view_offset = [0,0]
+    self.move_directions = {pygame.K_LEFT: (0,-1),
+			    pygame.K_RIGHT:(0, 1),
+			    pygame.K_UP:   (1,-1),
+			    pygame.K_DOWN: (1, 1)}
     self.pos = [[(self.get_pos(x,y)) \
       for y in range(self.blit_tiles[1])] \
       for x in range(self.blit_tiles[0])]
@@ -57,10 +61,8 @@ class Map():
   def run(self, events):
     for event in events:
       if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_LEFT:   self.move(0,-1)
-        elif event.key == pygame.K_RIGHT:self.move(0, 1)
-        elif event.key == pygame.K_UP:   self.move(1,-1)
-        elif event.key == pygame.K_DOWN: self.move(1, 1)
+        if event.key in self.move_directions:
+	  self.move(*self.move_directions[event.key])
     for x in range(self.blit_tiles[0]):
       for y in range(self.blit_tiles[1]):
         try:

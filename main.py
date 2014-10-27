@@ -6,7 +6,6 @@ import os
 import json
 import inspect
 
-import mengine
 import Assets.asset_loader as asset_loader
 import Assets.PauseMenu.main as pause_menu
 import Assets.Maps.to_collision as to_collision
@@ -32,7 +31,6 @@ class Main:
         self.title_font=pygame.font.SysFont("vervanda", 48)
         self.fps_font=pygame.font.SysFont("vervanda", 12)
 
-        self.mengine = mengine.Mengine #Menu engine
         self.asset_loader = asset_loader.AssetLoader(pygame)
         self.controllers = {
           "pause": pause_menu.PauseMenu,
