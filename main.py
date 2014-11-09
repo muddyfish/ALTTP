@@ -24,7 +24,7 @@ class Main:
         pygame.init()
         pygame.key.set_repeat(100)
         self.screen = Screen(pygame.display.set_mode(tuple(self.size), self.fullscreen)) #Create the display
-        pygame.display.set_caption("OOT 2D")
+        pygame.display.set_caption("ALTTP")
         self.clock = pygame.time.Clock()
         self.args = sys.argv
 
@@ -34,7 +34,7 @@ class Main:
         self.asset_loader = asset_loader.AssetLoader(pygame)
         self.controllers = {
           "pause": pause_menu.PauseMenu,
-          "collision_edit": to_collision.Map,
+          "map_edit": to_collision.Map,
           "map_view": view_map.Map}
         self.screen_control = None
         self.change_controller("map_view")

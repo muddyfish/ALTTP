@@ -50,7 +50,7 @@ for cw in range(0,w):
       if percent+amount<=100*(ch+(cw*w))/float(w*h):
         percent+=amount
         print(percent)
-print("%i%% of tiles kept"%(100*float(len(tile_hashes))/(w*h)))
+print("%s%% of tiles kept"%(100*float(len(tile_hashes))/(w*h)))
 print("Preparing output image")
 n_im = Image.new("RGB", (len(tiles)*SIZE,SIZE))
 

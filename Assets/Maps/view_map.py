@@ -1,6 +1,5 @@
 import zipfile
 import json
-import warnings
 try:
   import cStringIO as StringIO
 except ImportError:
@@ -13,8 +12,10 @@ class Map():
     self.screen = main.screen
     self.map_f = main.args[1]
     self.load_map(self.map_f)
-    self.tile_offset = [40,40]
+    self.tile_offset = [0,0]
     self.view_offset = [0,0]
+    self.coll_surf = pygame.Surface((16,8), pygame.SRCALPHA)
+    self.coll_surf.fill((0,128,0,128))
     self.move_directions = {pygame.K_LEFT: (0,-1),
 			    pygame.K_RIGHT:(0, 1),
 			    pygame.K_UP:   (1,-1),
@@ -47,12 +48,12 @@ class Map():
   def collide(self, d, a):
     offset = [self.tile_offset[i]*2-(self.view_offset[i]>>3)+self.blit_tiles[i] for i in range(2)]
     offset[d]+=a
-    return self.collision[offset[0]][offset[1]]^1
+    return not (self.collision[offset[0]][offset[1]] or self.collision[offset[0]-1][offset[1]])
 
   def move(self, d, a):
     if self.collide(d,a):
       self.view_offset[d]^=8
-      if len({(self.view_offset[d], a), (0,-1), (8,1)})==2: self.tile_offset[d]+=a
+      if len({(self.view_offset[d]%9, a), (0,-1), (8,1)})==2: self.tile_offset[d]+=a
       self.screen.blit_rects.append(((0,0), self.screen.get_size()))
       self.pos = [[(self.get_pos(x,y)) \
         for y in range(self.blit_tiles[1])] \
@@ -66,5 +67,7 @@ class Map():
     for x in range(self.blit_tiles[0]):
       for y in range(self.blit_tiles[1]):
         try:
+	  if x+self.tile_offset[0] < 0 or y+self.tile_offset[1] < 0: raise IndexError()
           self.screen.blit_func(self.tiles[x+self.tile_offset[0]][y+self.tile_offset[1]], self.pos[x][y])
-        except IndexError: warnings.warn("The border has been breached at: %r"%(self.tile_offset), UserWarning)
+        except IndexError: pass
+    self.screen.blit_func(self.coll_surf, (self.screen.get_width()/2-16, self.screen.get_height()/2-8))
