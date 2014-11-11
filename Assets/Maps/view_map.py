@@ -55,11 +55,12 @@ class Map():
   def move(self, d, a):
     if self.collide(d,a):
       self.view_offset[d]^=8
-      if len({(self.view_offset[d], a), (0,-1), (8,1)})==2: self.tile_offset[d]+=a
+      if len({(self.view_offset[d], a), (0,-1), (8,1)})==2:
+	self.tile_offset[d]+=a
       self.screen.blit_rects.append(((0,0), self.screen.get_size()))
   
   def run(self, events):
-    for event in events:
+    for event in events:    
       if event.type == pygame.KEYDOWN:
         if event.key in self.move_directions:
 	  self.move(*self.move_directions[event.key])
@@ -76,7 +77,7 @@ class Map():
     if self.tile_offset[0]+self.blit_tiles[0]-1 >= len(self.tiles):
       blit_x = len(self.tiles)-self.blit_tiles[0]
       view_x = 0
-      player_pos[0] -= (len(self.tiles)-self.blit_tiles[0]-self.tile_offset[0])*16+self.view_offset[0]     
+      player_pos[0] -= (len(self.tiles)-self.blit_tiles[0]-self.tile_offset[0])*16+self.view_offset[0]
     if self.tile_offset[1] <= 0:
       blit_y = 0
       view_y = 0

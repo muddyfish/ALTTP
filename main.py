@@ -22,10 +22,15 @@ class Main:
 
         #Init pygame
         pygame.init()
-        pygame.key.set_repeat(100)
         self.screen = Screen(pygame.display.set_mode(tuple(self.size), self.fullscreen)) #Create the display
         pygame.display.set_caption("ALTTP")
         self.clock = pygame.time.Clock()
+        self.key_event = pygame.USEREVENT+1
+        self.key_speed = 100
+        self.tick_event = pygame.USEREVENT+2
+        self.tick_speed = 25
+	pygame.time.set_timer(self.key_event, self.key_speed)
+	pygame.time.set_timer(self.tick_event, self.tick_speed)
         self.args = sys.argv
 
         self.title_font=pygame.font.SysFont("vervanda", 48)
@@ -44,11 +49,18 @@ class Main:
             self.clock.tick(self.fps_limit)
             events = pygame.event.get()
             for event in events: #Events that are always done
+		if event.type == self.key_event:
+		  keys = pygame.key.get_pressed()
+		  for key in xrange(len(keys)):
+		    if keys[key]:
+		      e = pygame.event.Event(pygame.KEYDOWN, {"unicode": unichr(key), "key": key, "mod": 0})
+		      if e not in events:
+			events.append(e)
                 if event.type == pygame.QUIT: self.quit()
                 if event.type == pygame.KEYDOWN: 
                     if event.key == pygame.K_BACKSPACE: self.screenshot()
                     elif event.key == pygame.K_ESCAPE:  self.quit()
-                        
+               
             self.screen_control.run(events) #Other events
             fps = self.fps_font.render("FPS: %d" %(int(self.clock.get_fps())), True, (255,255,255))
             self.screen.blit(fps, (10, 30))
