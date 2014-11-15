@@ -19,7 +19,7 @@ class Main:
     if self.settings["fullscreen"]:
       self.fullscreen = pygame.FULLSCREEN
     self.fps_limit = self.settings["fps_limit"]
-
+    
     #Init pygame
     pygame.init()
     self.screen = Screen(pygame.display.set_mode(tuple(self.size), self.fullscreen)) #Create the display
