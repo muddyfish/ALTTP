@@ -46,6 +46,7 @@ class Main:
     if 'edit' in self.args:
       cont = 'map_edit'
     self.change_controller(cont)
+    self.screen.blit_all()
     
   def run(self):
     while 1:

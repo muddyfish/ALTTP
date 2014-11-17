@@ -6,4 +6,5 @@ __pycache__/
 *.sfc
 #*#
 *.zdata
+*.png
 settings.json

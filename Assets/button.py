@@ -1,9 +1,13 @@
 class Button():
   def __init__(self, pygame, surface, color, x, y, length, height, width, text, text_color):
     globals()['pygame'] = pygame
-    surface = self.draw_button(surface, color, length, height, x, y, width)
-    surface = self.write_text(surface, text, text_color, length, height, x, y)
-    self.rect = pygame.Rect(x,y, length, height)
+    self.surface, self.color, self.x, self.y, self.length, self.height, self.width, self.text, self.text_color = surface, color, x, y, length, height, width, text, text_color
+    self.draw()
+    
+  def draw(self):
+    surface = self.draw_button(self.surface, self.color, self.length, self.height, self.x, self.y, self.width)
+    surface = self.write_text( self.surface, self.text, self.text_color, self.length, self.height, self.x, self.y)
+    self.rect = pygame.Rect(self.x,self.y, self.length, self.height)
 
   def write_text(self, surface, text, text_color, length, height, x, y):
     myFont = pygame.font.SysFont("velvenda", 18)

@@ -7,8 +7,9 @@ except ImportError:
   
 class Map():
   def __init__(self, main, pygame):
-    add_globals(main, pygame)
-    self.noclip = False
+    globals()["main"] = main
+    globals()["pygame"] = pygame
+    self.noclip = 'noclip' in main.args
     self.screen = main.screen
     self.map_f = main.args[1]
     self.load_map(self.map_f)
@@ -42,12 +43,9 @@ class Map():
       for x in range(len(self.position))]
     self.blit_tiles = [i//self.tile_size+1 for i in self.screen.get_size()]
   
-  def get_pos(self, x, y, view_offset, mult=16):
-    if mult > 8:
-      return ((x-1)*16+view_offset[0], (y-1)*16+view_offset[1])
-    else:
-      return ((x-2)*16+view_offset[0], (y-2)*16+view_offset[1])
-    
+  def get_pos(self, x, y, view_offset):
+    return ((x-1)*16+view_offset[0], (y-1)*16+view_offset[1])
+
   def collide(self, d, a):
     if self.noclip: return True
     offset = [self.tile_offset[i]*2-(self.view_offset[i]>>3)+self.blit_tiles[i] for i in range(2)]
@@ -59,7 +57,7 @@ class Map():
       self.view_offset[d]^=8
       if len({(self.view_offset[d], a), (0,-1), (8,1)})==2:
 	self.tile_offset[d]+=a
-      self.screen.blit_rects.append(((0,0), self.screen.get_size()))
+      self.screen.blit_all()
   
   def run(self, events):
     for event in events:    
@@ -93,7 +91,3 @@ class Map():
       for y in range(self.blit_tiles[1]):
 	self.screen.blit_func(self.tiles[blit_x+x][blit_y+y], self.pos[view_x][view_y][x][y])
     self.screen.blit_func(self.coll_surf, player_pos)
-    
-def add_globals(main, pygame):
-  globals()["main"] = main
-  globals()["pygame"] = pygame
