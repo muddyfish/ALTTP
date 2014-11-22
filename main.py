@@ -6,7 +6,7 @@ import os
 import json
 import inspect
 
-import Assets.asset_loader as asset_loader
+import Assets.Utility.asset_loader as asset_loader
 import Assets.PauseMenu.main as pause_menu
 import Assets.Maps.map_edit as map_edit
 import Assets.Maps.map_view as map_view
@@ -33,7 +33,7 @@ class Main:
     pygame.time.set_timer(self.tick_event, self.tick_speed)
     self.args = sys.argv
 
-    self.title_font=pygame.font.SysFont("vervanda", 48)
+    self.entry_font=pygame.font.SysFont("vervanda", 18)
     self.fps_font=pygame.font.SysFont("vervanda", 12)
 
     self.asset_loader = asset_loader.AssetLoader(pygame)
@@ -57,11 +57,11 @@ class Main:
 	  keys = pygame.key.get_pressed()
 	  for key in xrange(len(keys)):
 	    if keys[key]:
-	      e = pygame.event.Event(pygame.KEYDOWN, {"unicode": unichr(key), "key": key, "mod": 0})
+	      e = pygame.event.Event(pygame.KEYDOWN, {"unicode": None, "key": key, "mod": pygame.key.get_mods()})
 	      events.append(e)
         if event.type == pygame.QUIT: self.quit()
         if event.type == pygame.KEYDOWN: 
-          if event.key == pygame.K_BACKSPACE: self.screenshot()
+          if event.key == 167 and event.unicode != None: self.screenshot()
           elif event.key == pygame.K_ESCAPE:  self.quit()
          
       self.screen_control.run(events) #Other events

@@ -60,7 +60,7 @@ for cw in range(0,len(tiles)):
 im_f = StringIO.StringIO()
 n_im.save(im_f, format = "tga")
 
-save = zipfile.ZipFile(sys.argv[1].split(".")[0]+".tiles", "w", zipfile.ZIP_DEFLATED)
+save = zipfile.ZipFile(sys.argv[1].split(".")[0]+".tiles", "a", zipfile.ZIP_DEFLATED)
 print("Saving tile arrangement")
 save.writestr("position", json.dumps(tile_ids))
 print("Saving tiles")
